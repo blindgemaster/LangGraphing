@@ -23,7 +23,7 @@
                       END
 ```
 
-> **Notebook:** [`Drafting_agent.ipynb`](Drafting_agent.ipynb)
+> **Notebook:** [`tool_agent.ipynb`](tool_agent.ipynb)
 
 ---
 
