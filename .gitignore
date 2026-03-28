@@ -1,0 +1,16 @@
+# Environment variables
+.env
+
+# Logging
+logging.txt
+*.log
+logs/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# Jupyter
+.jupyter/
