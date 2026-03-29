@@ -59,6 +59,48 @@ You: "Draft a project proposal"
 
 ---
 
+### 3 — RAG Agent
+
+> *"Don't hallucinate. Go read."*
+
+A Retrieval-Augmented Generation agent that grounds every answer in a real PDF document.
+Instead of relying on the LLM's training data, it retrieves the most relevant chunks from a
+vector database before forming a response.
+
+```
+You: "Do they stock ibuprofen?"
+        │
+        ▼
+   ┌───────────┐   "I need to search the PDF"
+   │   Agent   │ ──────────────────────────────► ┌──────────────────────┐
+   └───────────┘                                  │  retrieve_pdf_info   │
+        ▲                                         │  ┌────────────────┐  │
+        │                                         │  │  ChromaDB      │  │
+        │   Top 5 matching chunks returned        │  │  (vector store)│  │
+        │ ◄───────────────────────────────────    │  └────────────────┘  │
+        │                                         └──────────────────────┘
+        ▼
+   "Ibuprofen is a major interaction with warfarin — avoid, use paracetamol."
+```
+
+**How it works under the hood:**
+
+| Step | What happens |
+|------|-------------|
+| 1. **Ingest** | PDF is loaded, split into 1000-char chunks with 200-char overlap |
+| 2. **Embed** | Each chunk is embedded via `text-embedding-3-small` and stored in ChromaDB |
+| 3. **Cache** | If the vector DB already exists on disk, embedding is skipped entirely |
+| 4. **Query** | User question → similarity search → top 5 chunks retrieved |
+| 5. **Answer** | LLM reads the chunks and answers grounded in the actual document |
+
+**Why RAG?**
+The LLM has no knowledge of your specific PDF. RAG bridges that gap — the agent only answers
+from what's actually in the document, making it accurate, auditable, and hallucination-resistant.
+
+**→** [`Rag_Agent.py`](Rag_Agent.py) — run via CLI, place your PDF as `example.pdf`
+
+---
+
 ## What's This?
 
 An active workspace for experimenting with **LangGraph** — stateful, multi-agent workflows built as graphs.
