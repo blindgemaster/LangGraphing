@@ -27,7 +27,7 @@ You: "what is 2+3?"
 
 > No tool needed? Agent skips straight to the answer.
 
-**→** [`tool_agent.ipynb`](tool_agent.ipynb)
+**→** [`tool_agent.ipynb`](notebooks/agents/tool_agent.ipynb)
 
 ---
 
@@ -55,7 +55,7 @@ You: "Draft a project proposal"
 
 > The loop only breaks when you type `exit`. Every iteration the agent sees the full conversation history.
 
-**→** [`drafting_agent_with_human_input.py`](drafting_agent_with_human_input.py) — run via CLI
+**→** [`drafting_agent_with_human_input.py`](agents/drafting_agent_with_human_input.py) — run via CLI
 
 ---
 
@@ -97,7 +97,7 @@ You: "Do they stock ibuprofen?"
 The LLM has no knowledge of your specific PDF. RAG bridges that gap — the agent only answers
 from what's actually in the document, making it accurate, auditable, and hallucination-resistant.
 
-**→** [`Rag_Agent.py`](Rag_Agent.py) — run via CLI, place your PDF as `example.pdf`
+**→** [`Rag_Agent.py`](agents/Rag_Agent.py) — run via CLI, place your PDF in `data/example.pdf`
 
 ---
 
