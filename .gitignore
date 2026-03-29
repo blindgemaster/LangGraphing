@@ -2,7 +2,6 @@
 .env
 
 # Logging
-logging.txt
 *.log
 logs/
 
@@ -14,3 +13,10 @@ __pycache__/
 
 # Jupyter
 .jupyter/
+
+# Vector database (auto-generated, can be large)
+chroma_db/
+
+# Data files (PDFs, test files — keep out of version control)
+data/
+*.pdf

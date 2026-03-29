@@ -19,15 +19,14 @@ llm = ChatOpenAI(model="gpt-5.4-nano", temperature=0)
 
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small",)
 
-pdf_path = "example.pdf"
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+pdf_path = os.path.join(BASE_DIR, "data", "example.pdf")
 
 if not os.path.exists(pdf_path):
-    print(f"[ERROR] PDF file '{pdf_path}' not found. Please make sure it exists in the current directory.")
+    print(f"[ERROR] PDF file '{pdf_path}' not found. Place your PDF in the data/ folder.")
     raise FileNotFoundError(f"PDF file '{pdf_path}' not found.")
 
-
-persist_directory = r"C:\Users\ka448\GoogleSDK\chroma_db"
+persist_directory = os.path.join(BASE_DIR, "chroma_db")
 collection_name = "pdf_docs"
 
 chroma_exists = os.path.exists(persist_directory) and os.path.isdir(persist_directory) and len(os.listdir(persist_directory)) > 0
