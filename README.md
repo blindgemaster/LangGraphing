@@ -101,6 +101,39 @@ from what's actually in the document, making it accurate, auditable, and halluci
 
 ---
 
+### 4 — Map-Reduce (Fan-Out / Fan-In)
+
+> *"Split. Score. Pick the winner."*
+
+A graph that fans out a dynamic list of items to parallel workers using LangGraph's `Send` API,
+then merges the results back into a single list via an `operator.add` reducer. The classic
+map-reduce pattern — one node decides the work, many copies of a worker run side by side, one
+node aggregates.
+
+```
+            ┌─────────────────┐
+            │  generate_items │   "fruits" → [apple, banana, cherry, date, elderberry]
+            └────────┬────────┘
+                     │  Send(item=...)   Send(item=...)   Send(item=...)
+          ┌──────────┼─────────────┬──────────────┬──────────────┐
+          ▼          ▼             ▼              ▼              ▼
+      ┌───────┐  ┌───────┐     ┌───────┐      ┌───────┐      ┌───────┐
+      │ score │  │ score │ ... │ score │      │ score │      │ score │   (parallel)
+      └───┬───┘  └───┬───┘     └───┬───┘      └───┬───┘      └───┬───┘
+          │          │             │              │              │
+          └──────────┴─────────────┴──────┬───────┴──────────────┘
+                                          ▼
+                                  ┌───────────────┐
+                                  │   pick_best   │  → reduces list, returns winner
+                                  └───────────────┘
+```
+
+> The conditional edge returns a list of `Send` objects instead of a route name — that's what tells LangGraph to spin up N parallel branches at runtime.
+
+**→** [`Map_Reduce.ipynb`](notebooks/graphs/Map_Reduce.ipynb)
+
+---
+
 ## What's This?
 
 An active workspace for experimenting with **LangGraph** — stateful, multi-agent workflows built as graphs.
