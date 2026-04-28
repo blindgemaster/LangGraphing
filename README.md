@@ -134,6 +134,42 @@ node aggregates.
 
 ---
 
+### 5 — Reflection Loop (Generator + Critic)
+
+> *"Draft. Critique. Refine. Repeat — until it passes."*
+
+A self-correcting loop: a generator drafts an answer, a critic evaluates it against
+explicit rules, and the graph either accepts the draft, retries with feedback, or
+gives up after a bounded number of attempts. The example refines a password until
+it satisfies a length-and-character policy.
+
+```
+   "give me a password"
+            │
+            ▼
+      ┌──────────┐
+      │ generate │ ◄─────────────────┐
+      └────┬─────┘                   │
+           │ draft                   │
+           ▼                         │
+      ┌──────────┐                   │ retry
+      │  critic  │ ── feedback ──────┤  (with feedback)
+      └────┬─────┘                   │
+           │                         │
+        decide ──── retry ───────────┘
+           │
+           ├── done   ──► END  (accepted)
+           └── giveup ──► END  (attempts exhausted)
+```
+
+> The critic returns a list of missing requirements. The next `generate` reads that
+> feedback and widens its character pool / length accordingly — feedback is the
+> signal that drives refinement.
+
+**→** [`Reflection_Loop.ipynb`](notebooks/graphs/Reflection_Loop.ipynb)
+
+---
+
 ## What's This?
 
 An active workspace for experimenting with **LangGraph** — stateful, multi-agent workflows built as graphs.
