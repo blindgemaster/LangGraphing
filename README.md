@@ -170,6 +170,37 @@ it satisfies a length-and-character policy.
 
 ---
 
+### 6 — Supervisor Routing (Hub & Spoke)
+
+> *"One boss. Many specialists. Pull a ticket, hand it off, repeat."*
+
+A supervisor node pulls one task at a time from a queue and routes it to the
+matching specialist worker (`math`, `text`, or `log`). Each worker appends its
+result and returns control to the supervisor, which keeps dispatching until the
+queue is empty — then the graph finishes.
+
+```
+                    ┌──────────────┐
+              ┌────► │  supervisor  │ ────► END  (queue empty)
+              │     └──────┬───────┘
+              │            │ route(current.kind)
+              │   ┌────────┼────────┐
+              │   ▼        ▼        ▼
+              │ ┌──────┐ ┌──────┐ ┌─────┐
+              │ │ math │ │ text │ │ log │   (specialist workers)
+              │ └──┬───┘ └──┬───┘ └──┬──┘
+              │    │        │        │
+              └────┴────────┴────────┘
+                       (loop back to supervisor)
+```
+
+> The conditional edge reads `state["current"]["kind"]` and dispatches to one of
+> N branches — the same shape scales to any number of specialists.
+
+**→** [`Supervisor_Routing.ipynb`](notebooks/graphs/Supervisor_Routing.ipynb)
+
+---
+
 ## What's This?
 
 An active workspace for experimenting with **LangGraph** — stateful, multi-agent workflows built as graphs.
